@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61892a3eb3b1c645bad85259279ec56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverColor: {r: 0.89019614, g: 0, b: 0, a: 0}
   players:
   - {fileID: 1258442144787598, guid: cff22389cc5e6744cad19cbcb1af7725, type: 2}
   - {fileID: 1735214517832100, guid: cd44cb50f61f5024c97cb0f56f956908, type: 2}

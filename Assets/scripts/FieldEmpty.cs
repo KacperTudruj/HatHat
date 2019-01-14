@@ -5,83 +5,73 @@ using UnityEngine.EventSystems;
 
 public class FieldEmpty : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-
-    //public Color hoverColor;
-
-    //private SpriteRenderer spriteRenderer;
-    //private Color startColor;
+    private SpriteRenderer rend;
+    private Color startColor;
+    private Color hoverColor = Color.grey;
 
     public GameObject[] players;
     public GameObject emptyField;
 
-    void Start ()
+    private void Start ()
     {
-        // wrote function who check the player numer 
-        //spriteRenderer = GetComponent<SpriteRenderer>();
-        //startColor = spriteRenderer.color;
-        //startColor = spriteRenderer.color;
+        rend = GetComponent<SpriteRenderer>();
+        startColor = GetComponent<SpriteRenderer>().color;
+        rend.material.color = startColor;
+    }
+
+    private void Update()
+    {
+        //After creating the game table, destroy the emptyFields
+        if (Stats.stateOfTheGame == 2)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void OnMouseEnter()
     {
-        //GetComponent<Renderer>().material.color = hoverColor;
-        //spriteRenderer.material.color = hoverColor;
-    }
-
-    public void OnMouseDown()
-    {
-        //if (!(currentPlayer == numberOfPlayer))
-        //{
-        //    if (currentPlayer == 3)
-        //    {
-        //        Instantiate(players[currentPlayer], transform.position, Quaternion.identity);
-        //        currentPlayer++;
-        //    }
-        //    if (currentPlayer == 2)
-        //    {
-        //        Instantiate(players[currentPlayer], transform.position, Quaternion.identity);
-        //        currentPlayer++;
-        //    }
-        //    if (currentPlayer == 1)
-        //    {
-        //        Instantiate(players[currentPlayer], transform.position, Quaternion.identity);
-        //        currentPlayer++;
-        //    }
-        //    if (currentPlayer == 0)
-        //    {
-        //        Instantiate(players[currentPlayer], transform.position, Quaternion.identity);
-        //        currentPlayer++;
-        //    }
-        //}
-        //else
-        //{
-        //    currentPlayer = 0;
-        //}
-        Debug.Log("Przed: " +  Stats.currentPlayer);
-        if (Stats.currentPlayer == Stats.numberOfPlayer)
-        {
-            Stats.currentPlayer = 0;
-            Debug.Log("I am in :3 " + Stats.currentPlayer);
-        }
-        Debug.Log("Po: " + Stats.currentPlayer);
-        Instantiate(players[Stats.currentPlayer], transform.position, Quaternion.identity);
-        Stats.currentPlayer++;
-        Debug.Log("Po0: " + Stats.currentPlayer);
-
-        //Instantiate(players[1], transform.position, Quaternion.identity);
-        SpawnEmptyFields(emptyField);
-        Destroy(gameObject);
+        rend.material.color = hoverColor;
     }
 
     public void OnMouseExit()
     {
-       //spriteRenderer.material.color = startColor;
+        rend.material.color = startColor;
     }
 
+    public void OnMouseDown()
+    {
+        if(Stats.stateOfTheGame == 1)
+        {
+            CreatingTable();
+        }
+    }
 
-    void Update () {
-		
-	}
+    private void CreatingTable()
+    {
+        //If the counter exceeds the number of players, set the counter to the first player
+        if (Stats.currentPlayer == Stats.numberOfPlayers)
+        {
+            Stats.currentPlayer = 0;
+        }
+        Instantiate(players[Stats.currentPlayer], transform.position, Quaternion.identity);
+        Stats.currentPlayer++;
+
+        //Camera is set so that it is placed on a new object
+        Vector3 current = gameObject.transform.position;
+        current.z = -10;    // if .z=0, the camera would be in the object
+        GameObject.Find("Main Camera").transform.position = current;
+
+        //Creating emptyfields where the player can set his Playerfields
+        SpawnEmptyFields(emptyField);
+        Destroy(gameObject);
+
+        //when you use the available fields, go to second stateOfTheGame
+        if (Stats.fieldsToPlay == 0)
+        {
+            Stats.stateOfTheGame = 2;
+        }
+        Stats.fieldsToPlay--;
+    }
 
     private void SpawnEmptyFields(GameObject empty)
     {
@@ -101,25 +91,25 @@ public class FieldEmpty : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         hit = Physics2D.Raycast(transform.position + (1.5f * Vector3.left), (0.5f * Vector2.down), 1.2f);
         if (hit.collider == null)
         {
-            Instantiate(empty, new Vector2(transform.position.x - (2f), transform.position.y - (1.1f)), Quaternion.identity);
+            Instantiate(empty, new Vector2(transform.position.x - (2f), transform.position.y - (1.1f)), Quaternion.identity, null);
         }
 
         hit = Physics2D.Raycast(transform.position + (1.5f * Vector3.left), (0.5f * Vector2.up), 1.2f);
         if (hit.collider == null)
         {
-            Instantiate(empty, new Vector2(transform.position.x - (2f), transform.position.y + (1.1f)), Quaternion.identity);
+            Instantiate(empty, new Vector2(transform.position.x - (2f), transform.position.y + (1.1f)), Quaternion.identity, null);
         }
 
         hit = Physics2D.Raycast(transform.position + (1.5f * Vector3.right), (0.5f * Vector2.down), 1.2f);
         if (hit.collider == null)
         {
-            Instantiate(empty, new Vector2(transform.position.x + (2f), transform.position.y - (1.1f)), Quaternion.identity);
+            Instantiate(empty, new Vector2(transform.position.x + (2f), transform.position.y - (1.1f)), Quaternion.identity, null);
         }
 
         hit = Physics2D.Raycast(transform.position + (1.5f * Vector3.right), (0.5f * Vector2.up), 1.2f);
         if (hit.collider == null)
         {
-            Instantiate(empty, new Vector2(transform.position.x + (2f), transform.position.y + (1.1f)), Quaternion.identity);
+            Instantiate(empty, new Vector2(transform.position.x + (2f), transform.position.y + (1.1f)), Quaternion.identity, null);
         }
     }
 

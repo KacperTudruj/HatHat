@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 737221636}
   - component: {fileID: 737221639}
   m_Layer: 0
-  m_Name: Main Camera (1)
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,7 +166,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -207,7 +207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69525ef9506d5cd48a7cabc442063521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panSpeed: 30
+  panSpeed: 5
+  panBorderThickness: 10
 --- !u!1 &907813190
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +237,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentPlayer: 0
-  NumberOfPlayer: 4
+  NumberOfPlayers: 4
+  FieldsToPlay: 8
+  StateOfTheGame: 1
 --- !u!4 &907813192
 Transform:
   m_ObjectHideFlags: 0
